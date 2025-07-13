@@ -93,16 +93,16 @@ if [ $AS_NEW -eq 1 ]; then
     rm -rf HELAC-Onia-2.7.6
     tar -xzvf sources/HELAC-Onia-2.7.6.tar.gz
     # - Before compilation, apply patches
-    if [ -f "patch/addon/pp_NOnia_MPS/src/pp_NOnia_MPS.f90" ]; then 
-        cp patch/addon/pp_NOnia_MPS/src/pp_NOnia_MPS.f90 HELAC-Onia-2.7.6/addon/pp_NOnia_MPS/src/pp_NOnia_MPS.f90
-	    cp HELAC-Onia-2.7.6/src/RANDA_init.inc HELAC-Onia-2.7.6/addon/pp_NOnia_MPS/src/
-    fi
+    # if [ -f "patch/addon/pp_NOnia_MPS/src/pp_NOnia_MPS.f90" ]; then 
+    #     cp patch/addon/pp_NOnia_MPS/src/pp_NOnia_MPS.f90 HELAC-Onia-2.7.6/addon/pp_NOnia_MPS/src/pp_NOnia_MPS.f90
+	#     cp HELAC-Onia-2.7.6/src/RANDA_init.inc HELAC-Onia-2.7.6/addon/pp_NOnia_MPS/src/
+    # fi
     # - Enter directory and check that the lhapdfobj setting in pp_psiY_SPS is already blocked.
     cd HELAC-Onia-2.7.6
-    if egrep -q "^\W*lhapdfobj" addon/pp_psiY_SPS/src/makefile ; then
-        echo "Blocking lhapdfobj setting in addon/pp_psiY_SPS/src/makefile"
-        sed -i -r -e 's/^.*lhapdfobj.*/#lhapdfobj=/' addon/pp_psiY_SPS/src/makefile
-    fi
+    # if egrep -q "^\W*lhapdfobj" addon/pp_psiY_SPS/src/makefile ; then
+    #     echo "Blocking lhapdfobj setting in addon/pp_psiY_SPS/src/makefile"
+    #     sed -i -r -e 's/^.*lhapdfobj.*/#lhapdfobj=/' addon/pp_psiY_SPS/src/makefile
+    # fi
 
     # - Check that the HepMC installation directory is set in input/ho_configuration.txt
     sed -i -r -e "s|^#.*hepmc_path.*$|hepmc_path = $HEPMC_DIR/install|" input/ho_configuration.txt
@@ -120,6 +120,10 @@ fi
 sed -e "s/MY_SEED/$SEED/" ../configs/run_HELAC.ho.tpl > ../configs/run_HELAC.ho
 
 # - More config file changes
+if [ -f "../configs/input/user.inp" ]; then
+    cp ../configs/input/user.inp input/user.inp
+fi
+
 if [ -f "../configs/input/py8_onia_user.inp" ]; then
     cp ../configs/input/py8_onia_user.inp input/py8_onia_user.inp
 fi
@@ -136,10 +140,10 @@ RUN_DIR=$(egrep "INFO: Results are collected in" ../run_HELAC.log | \
             sed -r -e "s,^.*(PROC_HO_[0-9]+)\/.*$,\1,g")
 
 # - Copy the resulting LHE file to the current directory.
-if [ -f "$RUN_DIR/P0_addon_pp_NOnia_MPS/output/sample_pp_nonia_mps.lhe" ]; then
-    cp "$RUN_DIR/P0_addon_pp_NOnia_MPS/output/sample_pp_nonia_mps.lhe" "$WORKDIR/sample_pp_nonia_mps.lhe"
+if [ -f "$RUN_DIR/P0_calc_0/output/samplegggg.lhe" ]; then
+    cp "$RUN_DIR/P0_calc_0/output/samplegggg.lhe" "$WORKDIR/samplegggg.lhe"
 else
-    echo "Error: No output LHE file found in $RUN_DIR/P0_addon_pp_NOnia_MPS/output/"
+    echo "Error: No output LHE file found in $RUN_DIR/P0_calc_0/output/"
     exit 1
 fi
 

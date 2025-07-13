@@ -10,6 +10,9 @@ set seed = MY_SEED
 set parton_shower = 0
 set minptconia 2.0d0
 set minptbonia 2.0d0
-generate addon 11
+set maxrapconia = 2.4
+set minptq = 4.0
+set ranhel = 4
+generate g g > g g
 launch
 exit
